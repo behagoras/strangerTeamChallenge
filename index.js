@@ -2,6 +2,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const slash = require('express-slash')
+
 const hashtagsRouter = require('./routes/hashtags')
 const config = require('./config')
 
@@ -18,6 +20,8 @@ const app = express()
 
 // middlewares
 app.use(bodyParser.json())
+app.enable('strict routing')
+app.use(slash())
 
 // routes
 app.use('/api/hashtags', hashtagsRouter)
