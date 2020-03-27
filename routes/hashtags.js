@@ -14,10 +14,8 @@ router.get('/', async (req, res, next) => {
   try {
     const query = {}
     const hashtags = await db.getAll(collection, query)
-    console.log(hashtags)
     res.json(hashtags)
   } catch (error) {
-    console.error(error)
     next(error)
   }
 })
@@ -26,11 +24,11 @@ router.get('/', async (req, res, next) => {
 router.get('/:hashtag', async (req, res, next) => {
   try {
     const { hashtag } = req.params
-    const result = await db.getAll(collection,{hashtag})
+    const result = await db.getAll(collection, { hashtag })
 
     res.status(201).json({
       hashtag,
-      data:result
+      data: result
     })
   } catch (err) {
     next(err)
@@ -41,21 +39,21 @@ router.get('/:hashtag', async (req, res, next) => {
 router.post('/:hashtag', async (req, res, next) => {
   try {
     const { hashtag } = req.params
-    const object = await db.getAll(collection, {hashtag})
+    const object = await db.getAll(collection, { hashtag })
     if (object) {
       object.forEach(element => {
-        db.delete(collection,element._id)
-      });
+        db.delete(collection, element._id)
+      })
     }
 
     const data = await TwitterApiService.getData(hashtag)
     console.log(data)
-    const _id = await db.create(collection,{data:data.statuses, hashtag})
-    const result = await db.get(collection,_id)
+    const _id = await db.create(collection, { data: data.statuses, hashtag })
+    const result = await db.get(collection, _id)
 
     res.status(201).json({
       hashtag,
-      data:result
+      data: result
     })
   } catch (err) {
     next(err)
@@ -66,17 +64,17 @@ router.post('/:hashtag', async (req, res, next) => {
 router.delete('/:hashtag', async (req, res, next) => {
   try {
     const { hashtag } = req.params
-    const object = await db.getAll(collection, {hashtag})
-    const deleted=[]
+    const object = await db.getAll(collection, { hashtag })
+    const deleted = []
     if (object) {
       object.forEach(element => {
-        const _id = db.delete(collection,element._id)
+        const _id = db.delete(collection, element._id)
         deleted.push(_id)
-      });
+      })
     }
     res.status(200).json({
-      action:'delete',
-      hashtag,
+      action: 'delete',
+      hashtag
     })
   } catch (err) {
     next(err)

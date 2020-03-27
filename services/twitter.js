@@ -11,6 +11,7 @@ class TwitterApiServices {
       return Promise.resolve(data)
     } catch (error) {
       console.log(`Error: ${error}`)
+      return error
     }
   }
 }

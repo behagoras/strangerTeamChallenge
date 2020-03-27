@@ -1,11 +1,25 @@
+// libraries import
 const express = require('express')
-const hashtagsRouter = require('./routes/hashtags')
 const bodyParser = require('body-parser')
-const app = express()
+
+const hashtagsRouter = require('./routes/hashtags')
 const config = require('./config')
 
+// require errors
+const {
+  logErrors,
+  wrapErrors,
+  clientErrorHandler,
+  errorHandler
+} = require('./utils/middlewares/errorsHandlers')
+
+// app
+const app = express()
+
+// middlewares
 app.use(bodyParser.json())
 
+// routes
 app.use('/api/hashtags', hashtagsRouter)
 
 app.use((err, req, res, next) => {
@@ -17,6 +31,12 @@ app.use((err, req, res, next) => {
 
   res.status(500).send({ error: err.message })
 })
+
+// error handlers
+app.use(logErrors)
+app.use(wrapErrors)
+app.use(clientErrorHandler)
+app.use(errorHandler)
 
 const server = app.listen(config.port, () => {
   console.log(`Server listening http://localhost:${server.address().port}`)
