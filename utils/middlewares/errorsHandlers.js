@@ -1,6 +1,6 @@
 const boom = require('boom')
 const debug = require('debug')('app:error')
-const { config } = require('../../config')
+const config = require('../../config')
 const isRequestAjaxOrApi = require('../../utils/isRequestAjaxOrApi')
 
 function withErrorStack (err, stack) {
@@ -39,6 +39,10 @@ function errorHandler (err, req, res, next) {
   const {
     output: { statusCode, payload }
   } = err
+
+  if (!config.dev) {
+    delete err.stack
+  }
 
   res.status(statusCode)
   res.render('error', withErrorStack(payload, err.stack))

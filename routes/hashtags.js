@@ -4,6 +4,14 @@ const router = express.Router()
 const HashtagsService = require('../lib/services/hashtags')
 const hashtagsService = new HashtagsService()
 
+// const validation = require('../utils/middlewares/validationHandler')
+// const {
+// hashtagIdSchema,
+// hashtagTagSchema,
+// createHashtagSchema
+// updateHashtagSchema
+// } = require('../utils/schemas/hashtags')
+
 // Get all hashtags from mongo
 router.get('/', async (req, res, next) => {
   const { tags } = req.query
@@ -31,18 +39,21 @@ router.get('/:hashtag', async (req, res, next) => {
 })
 
 // Get specific hashtag from twitter and insert to mongo
-router.post('/:hashtag', async (req, res, next) => {
-  try {
-    const { hashtag } = req.params
-    const data = await hashtagsService.createHashtag({ hashtag })
-    res.status(201).json({
-      hashtag,
-      data
-    })
-  } catch (err) {
-    next(err)
-  }
-})
+router.post(
+  '/:hashtag',
+  // validation(createHashtagSchema),
+  async (req, res, next) => {
+    try {
+      const { hashtag } = req.params
+      const data = await hashtagsService.createHashtag({ hashtag })
+      res.status(201).json({
+        hashtag,
+        data
+      })
+    } catch (err) {
+      next(err)
+    }
+  })
 
 // Delete specific hashtag and every duplication
 router.delete('/:hashtag', async (req, res, next) => {
