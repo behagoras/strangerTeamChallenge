@@ -1,5 +1,5 @@
-function isRequestAjaxOrApi(req) {
-  return !req.accepts("html") || req.xhr;
+function isRequestAjaxOrApi (req) {
+  return !req.accepts('html') || req.xhr
 }
 
-module.exports = isRequestAjaxOrApi;
+module.exports = isRequestAjaxOrApi

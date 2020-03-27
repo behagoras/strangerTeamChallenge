@@ -1,19 +1,14 @@
 const express = require('express')
-const TwitterApiServices = require('../services/twitter')
 const router = express.Router()
 
-const MongoLib = require('../store/mongo')
-const db = new MongoLib()
-
-const TwitterApiService = new TwitterApiServices()
-
-const collection = 'hashtags'
+const HashtagsService = require('../lib/services/hashtags')
+const hashtagsService = new HashtagsService()
 
 // Get all hashtags from mongo
 router.get('/', async (req, res, next) => {
+  const { tags } = req.query
   try {
-    const query = {}
-    const hashtags = await db.getAll(collection, query)
+    const hashtags = await hashtagsService.getHashtags({ tags })
     res.json(hashtags)
   } catch (error) {
     next(error)
@@ -24,11 +19,11 @@ router.get('/', async (req, res, next) => {
 router.get('/:hashtag', async (req, res, next) => {
   try {
     const { hashtag } = req.params
-    const result = await db.getAll(collection, { hashtag })
+    const data = await hashtagsService.getHashtag({ hashtag })
 
     res.status(201).json({
       hashtag,
-      data: result
+      data
     })
   } catch (err) {
     next(err)
@@ -39,21 +34,10 @@ router.get('/:hashtag', async (req, res, next) => {
 router.post('/:hashtag', async (req, res, next) => {
   try {
     const { hashtag } = req.params
-    const object = await db.getAll(collection, { hashtag })
-    if (object) {
-      object.forEach(element => {
-        db.delete(collection, element._id)
-      })
-    }
-
-    const data = await TwitterApiService.getData(hashtag)
-    console.log(data)
-    const _id = await db.create(collection, { data: data.statuses, hashtag })
-    const result = await db.get(collection, _id)
-
+    const data = await hashtagsService.createHashtag({ hashtag })
     res.status(201).json({
       hashtag,
-      data: result
+      data
     })
   } catch (err) {
     next(err)
@@ -64,17 +48,11 @@ router.post('/:hashtag', async (req, res, next) => {
 router.delete('/:hashtag', async (req, res, next) => {
   try {
     const { hashtag } = req.params
-    const object = await db.getAll(collection, { hashtag })
-    const deleted = []
-    if (object) {
-      object.forEach(element => {
-        const _id = db.delete(collection, element._id)
-        deleted.push(_id)
-      })
-    }
+    const deletedHashtagId = await hashtagsService.deleteHashtag({ hashtag })
     res.status(200).json({
       action: 'delete',
-      hashtag
+      hashtag,
+      deletedHashtagId
     })
   } catch (err) {
     next(err)
