@@ -1,3 +1,26 @@
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [{ "src": "/(.*)", "dest": "/index.js" }],
+  "env": {
+    "TWITTER_CONSUMER_KEY":"@stranger-twitter-consumer-key",
+    "TWITTER_CONSUMER_SECRET":"@stranger-twitter-consumer-secret",
+    "TWITTER_ACCESS_TOKEN_KEY":"@stranger-twitter-access-token-key",
+    "TWITTER_ACCESS_TOKEN_SECRET":"@stranger-twitter-access-token-secret",
+
+    "DB_HOST":"@stranger-db-host",
+    "DB_USER":"@stranger-db-user",
+    "DB_PASSWORD":"@stranger-db-password",
+    "DB_NAME":"@stranger-db-name",
+
+    "AUTH_ADMIN_USERNAME":"@stranger-auth-admin-username",
+    "AUTH_ADMIN_PASSWORD":"@stranger-auth-admin-password",
+    "AUTH_ADMIN_EMAIL":"@stranger-auth-admin-email",
+    "AUTH_JWT_SECRET":"@stranger-auth-jwt-secret"
+  }
 }

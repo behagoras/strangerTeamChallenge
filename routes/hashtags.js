@@ -6,7 +6,7 @@ const HashtagsService = require('../lib/services/hashtags')
 const hashtagsService = new HashtagsService()
 
 // JWT strategy
-require('../utils/auth/strategies/jwt')
+// require('../utils/auth/strategies/jwt')
 
 // const validation = require('../utils/middlewares/validationHandler')
 // const {
@@ -28,19 +28,21 @@ router.get('/', async (req, res, next) => {
 })
 
 // Get specific hashtag from mongo
-router.get('/:hashtag', async (req, res, next) => {
-  try {
-    const { hashtag } = req.params
-    const data = await hashtagsService.getHashtag({ hashtag })
+router.get('/:hashtag',
+  // passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const { hashtag } = req.params
+      const data = await hashtagsService.getHashtag({ hashtag })
 
-    res.status(201).json({
-      hashtag,
-      data
-    })
-  } catch (err) {
-    next(err)
-  }
-})
+      res.status(201).json({
+        hashtag,
+        data
+      })
+    } catch (err) {
+      next(err)
+    }
+  })
 
 // Get specific hashtag from twitter and insert to mongo
 router.post(

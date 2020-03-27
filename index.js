@@ -2,6 +2,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const debug = require('debug')('app:server')
+const helmet = require('helmet')
 
 const slash = require('express-slash')
 
@@ -21,6 +22,7 @@ const {
 const app = express()
 
 // middlewares
+app.use(helmet())
 app.use(bodyParser.json())
 app.enable('strict routing')
 app.use(slash())

@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node index.js",
-    "build": "node index.js",
     "dev": "DEBUG=app:* nodemon index.js",
     "dev:inspect": "nodemon --inspect index.js",
     "dev:inspect:debug": "DEBUG=express:*,app:* nodemon --inspect index.js",
@@ -24,6 +23,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-slash": "^2.0.1",
+    "helmet": "^3.22.0",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
