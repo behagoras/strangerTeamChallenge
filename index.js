@@ -1,6 +1,7 @@
 // libraries import
 const express = require('express')
 const bodyParser = require('body-parser')
+const debug = require('debug')('app:server')
 
 const slash = require('express-slash')
 
@@ -28,15 +29,14 @@ app.use(slash())
 app.use('/api/hashtags', hashtagsRouter)
 app.use('/api/auth', authApiRouter)
 
-app.use((err, req, res, next) => {
-  console.log('entro')
+// app.use((err, req, res, next) => {
 
-  if (err.message.match(/not found/)) {
-    return res.status(404).send({ error: err.message })
-  }
+//   if (err.message.match(/not found/)) {
+//     return res.status(404).send({ error: err.message })
+//   }
 
-  res.status(500).send({ error: err.message })
-})
+//   res.status(500).send({ error: err.message })
+// })
 
 // error handlers
 app.use(logErrors)
@@ -45,7 +45,7 @@ app.use(clientErrorHandler)
 app.use(errorHandler)
 
 const server = app.listen(config.port, () => {
-  console.log(`Server listening http://localhost:${server.address().port}`)
+  debug(`Server listening http://localhost:${server.address().port}`)
 })
 
 module.exports = server
