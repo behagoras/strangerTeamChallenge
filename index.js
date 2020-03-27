@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const slash = require('express-slash')
 
 const hashtagsRouter = require('./routes/hashtags')
+const authApiRouter = require('./routes/auth')
 const config = require('./config')
 
 // require errors
@@ -25,6 +26,7 @@ app.use(slash())
 
 // routes
 app.use('/api/hashtags', hashtagsRouter)
+app.use('/api/auth', authApiRouter)
 
 app.use((err, req, res, next) => {
   console.log('entro')

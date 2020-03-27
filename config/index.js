@@ -12,7 +12,12 @@ const config = {
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
   accessTokenKey: process.env.TWITTER_ACCESS_TOKEN_KEY,
-  accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+
+  authAdminUsername: process.env.AUTH_ADMIN_USERNAME,
+  authAdminPassword: process.env.AUTH_ADMIN_PASSWORD,
+  authAdminEmail: process.env.AUTH_ADMIN_EMAIL,
+  authJwtSecret: process.env.AUTH_JWT_SECRET
 }
 
 module.exports = config

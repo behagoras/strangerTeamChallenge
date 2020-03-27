@@ -1,8 +1,12 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
 
 const HashtagsService = require('../lib/services/hashtags')
 const hashtagsService = new HashtagsService()
+
+// JWT strategy
+require('../utils/auth/strategies/jwt')
 
 // const validation = require('../utils/middlewares/validationHandler')
 // const {
@@ -41,6 +45,7 @@ router.get('/:hashtag', async (req, res, next) => {
 // Get specific hashtag from twitter and insert to mongo
 router.post(
   '/:hashtag',
+  // passport.authenticate('jwt', { session: false }),
   // validation(createHashtagSchema),
   async (req, res, next) => {
     try {
@@ -56,18 +61,21 @@ router.post(
   })
 
 // Delete specific hashtag and every duplication
-router.delete('/:hashtag', async (req, res, next) => {
-  try {
-    const { hashtag } = req.params
-    const deletedHashtagId = await hashtagsService.deleteHashtag({ hashtag })
-    res.status(200).json({
-      action: 'delete',
-      hashtag,
-      deletedHashtagId
-    })
-  } catch (err) {
-    next(err)
-  }
-})
+router.delete(
+  '/:hashtag',
+  // passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const { hashtag } = req.params
+      const deletedHashtagId = await hashtagsService.deleteHashtag({ hashtag })
+      res.status(200).json({
+        action: 'delete',
+        hashtag,
+        deletedHashtagId
+      })
+    } catch (err) {
+      next(err)
+    }
+  })
 
 module.exports = router
